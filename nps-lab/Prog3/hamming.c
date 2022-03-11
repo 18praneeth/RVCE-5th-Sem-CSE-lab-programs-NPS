@@ -1,52 +1,36 @@
 #include<stdio.h>
-#include<stdlib.h>
-
-
 int main()
 {
-    int i,a[4],r[4];
-    printf("Enter the 4 bit data word:\n");
-    for(i=3;i>=0;i--)
-        scanf("%d",&a[i]);
-    r[0]=(a[0]+a[1]+a[3])%2;
-    r[1]=(a[0]+a[2]+a[3])%2;
-    r[2]=(a[1]+a[2]+a[3])%2;
-    printf("Hamming codeword is:\n");
-    for(i=3;i>=0;i--)
-        printf("%d ",a[i]);
-    for(i=2;i>=0;i--)
-        printf("%d ",r[i]);
-    printf("\nEnter the 7 bit received code word:\n");
-    int b[4],q[3],c[7],s[3];
-    for(i=3;i>=0;i--)
-    {
-        scanf("%d", &b[i]);
-        c[i+3]=b[i];
-    }
-    for(i=2;i>=0;i--)
-    {
-        scanf("%d", &q[i]);
-        c[i]=q[i];
-    }
-    s[0] = (b[0]+b[1]+b[3]+q[0])%2;
-    s[1] = (b[0]+b[2]+b[3]+q[1])%2;
-    s[2] = (b[1]+b[2]+b[3]+q[2])%2;
-    if(s[0]==0 && s[1]==0 && s[2]==0)
-        printf("Error free\n");
-    else
-    {
-        int pos=s[0]+s[1]*2+s[2]*4-1;
-        printf("Error found at %dth bit\n",pos+1);
-        if(c[pos]==0)
-            c[pos]=1;
-        else
-            c[pos]=0;   
-        printf("Code word after correction is:\n");
-        for(i=6;i>=0;i--)
-            printf("%d ",c[i]);
-        printf("Correct data word:\n");
-        for(i=6;i>=3;i--)
-            printf("%d ",c[i]);
-    } 
-    return 0;
+	int data[7],c,c0,c1,c2,recv[7],i;
+	printf("Enter four bit data ");
+	scanf("%d",&data[3]);
+	scanf("%d",&data[5]);
+	scanf("%d",&data[6]);
+	scanf("%d",&data[7]);
+	data[1]=(data[3]+data[5]+data[7])%2;
+	data[2]=(data[3]+data[6]+data[7])%2;
+	data[4]=(data[5]+data[6]+data[7])%2;
+	printf("The Data encoded is :");
+	for(i=1;i<8;i++){
+		printf("%d",data[i]);
+	}
+	printf("\nEnter Data received is : ");
+	for(i=1;i<8;i++){
+		scanf("%d",&recv[i]);}
+	c0=	(recv[1]+recv[3]+recv[5]+recv[7])%2;
+	c1=	(recv[2]+recv[3]+recv[6]+recv[7])%2;
+	c2=	(recv[4]+recv[5]+recv[6]+recv[7])%2;
+	c=c2*4+c1*2+c0*1;
+	printf("The error is at position %d",c);
+	if(recv[c]==0)
+		recv[c]=1;
+	else 
+		recv[c]=0;
+	printf("\nThe Data corrected is :");
+	for(i=1;i<8;i++){
+		printf("%d",recv[i]);
+	}
+	
+	return 0;
+
 }
