@@ -5,12 +5,13 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#include<stdlib.h>
- 
+#include <stdlib.h>
+#include <unistd.h> 
+
 #define HELLO_PORT 12345
 #define HELLO_GROUP "225.0.0.37"
  
-main(int argc, char *argv[])
+int main()
 {
 struct sockaddr_in addr;
 int fd, cnt;
@@ -31,11 +32,11 @@ addr.sin_port=htons(HELLO_PORT);
  
  	/* now just sendto() our destination! */
 while (1) {
-  	if (sendto(fd,message,sizeof(message),0,(structsockaddr *) &addr,
-       	sizeof(addr)) < 0) {
-  	perror("sendto");
-  	exit(1);
+  	if (sendto(fd,message,sizeof(message),0,(struct sockaddr *) &addr,sizeof(addr)) < 0) {
+  		perror("sendto");
+  		exit(1);
   	  }
+
   	sleep(1);
  	}
 }
