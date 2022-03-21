@@ -11,10 +11,10 @@
 #define HELLO_GROUP "225.0.0.37"
 #define MSGBUFSIZE 25
  
-main(intargc, char *argv[])
+int main()
 {
 struct sockaddr_in addr;
-intfd, nbytes,addrlen;
+int fd, nbytes,addrlen;
 struct ip_mreq mreq;
 char msgbuf[MSGBUFSIZE];
  
@@ -23,16 +23,20 @@ if ((fd=socket(AF_INET,SOCK_DGRAM,0)) < 0) {
   	perror("socket");
   	exit(1);
  	}
+
+
 if (setsockopt(fd,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes)) < 0) {
 perror("Reusing ADDR failed");
 exit(1);
    	}
+
+	   
 memset(&addr,0,sizeof(addr));
 addr.sin_family=AF_INET;
 addr.sin_addr.s_addr=htonl(INADDR_ANY); addr.sin_port=htons(HELLO_PORT);
  
  	/* bind to receive address */
-if (bind(fd,(structsockaddr *) &addr,sizeof(addr)) < 0) {
+if (bind(fd,(struct sockaddr *) &addr,sizeof(addr)) < 0) {
   	perror("bind");
   	exit(1);
  	}
@@ -48,11 +52,10 @@ if (setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq)) < 0) {
  	/* now just enter a read-print loop */
 while (1) {
   	addrlen=sizeof(addr);
-  	if ((nbytes=recvfrom(fd,msgbuf,MSGBUFSIZE,0,
-             	   	(structsockaddr *) &addr,&addrlen)) < 0) {
-  	perror("recvfrom");
-  	
+  	if ((nbytes=recvfrom(fd,msgbuf,MSGBUFSIZE,0, (struct sockaddr *) &addr,&addrlen)) < 0) {
+  		perror("recvfrom");
   	  }
+	
   	puts(msgbuf);
  	}
 }
