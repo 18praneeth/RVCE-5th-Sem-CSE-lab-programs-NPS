@@ -1,7 +1,7 @@
 #include<stdio.h>
 int main()
 {
-	int data[7],c,c0,c1,c2,recv[7],i;
+	int data[8],c,c0,c1,c2,recv[8],i;
 	printf("Enter four bit data ");
 	scanf("%d",&data[3]);
 	scanf("%d",&data[5]);
